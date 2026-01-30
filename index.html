@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anniversary 5 Years ♥</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 50%, #e1bee7 100%);
+            position: relative;
+        }
+
+        /* Animated Background Elements */
+        .bg-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff69b4;
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        .heart:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { top: 60%; left: 85%; animation-delay: 2s; }
+        .heart:nth-child(3) { top: 80%; left: 20%; animation-delay: 4s; }
+        .heart:nth-child(4) { top: 30%; left: 75%; animation-delay: 1s; }
+        .heart:nth-child(5) { top: 50%; left: 5%; animation-delay: 3s; }
+
+        .star {
+            position: absolute;
+            color: #ff91a4;
+            font-size: 16px;
+            animation: twinkle 4s linear infinite;
+        }
+
+        .star:nth-child(6) { top: 15%; left: 60%; animation-delay: 0.5s; }
+        .star:nth-child(7) { top: 70%; left: 70%; animation-delay: 2.5s; }
+        .star:nth-child(8) { top: 25%; left: 30%; animation-delay: 1.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Screen containers */
+        .screen {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Welcome Screen */
+        .welcome-content {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            width: 100%;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .welcome-title {
+            font-size: 3.5rem;
+            color: #d81b60;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.8rem;
+            color: #ad1457;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .anniversary-text {
+            font-size: 2.2rem;
+            color: #e91e63;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .continue-btn {
+            background: linear-gradient(45deg, #ff69b4, #ff1744);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 105, 180, 0.6);
+        }
+
+        /* Question Screen */
+        .question-content {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 80px 50px;
+            border-radius: 30px;
+            box-shadow: 0 25px 70px rgba(255, 105, 180, 0.4);
+            backdrop-filter: blur(15px);
+            max-width: 700px;
+            width: 100%;
+            animation: bounceIn 1s ease-out;
+        }
+
+        .question-title {
+            font-size: 3rem;
+            color: #d81b60;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            position: relative;
+            height: 80px;
+        }
+
+        .btn-yes, .btn-no {
+            padding: 15px 30px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #4caf50, #66bb6a);
+            color: white;
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+            position: relative;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(76, 175, 80, 0.6);
+        }
+
+        .btn-no {
+            background: linear-gradient(45deg, #f44336, #ef5350);
+            color: white;
+            box-shadow: 0 8px 20px rgba(244, 67, 54, 0.4);
+            position: absolute;
+            transition: all 0.5s ease;
+        }
+
+        /* Letter Screen */
+        .letter-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 60px 50px;
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(255, 105, 180, 0.4);
+            backdrop-filter: blur(15px);
+            max-width: 800px;
+            width: 100%;
+            animation: slideInFromTop 1s ease-out;
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .letter-title {
+            font-size: 2.5rem;
+            color: #d81b60;
+            margin-bottom: 20px;
+        }
+
+        .letter-body {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+            padding: 30px;
+            background: rgba(255, 245, 238, 0.8);
+            border-radius: 15px;
+            border-left: 5px solid #ff69b4;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .welcome-content, .question-content, .letter-content {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+
+            .welcome-subtitle {
+                font-size: 1.4rem;
+            }
+
+            .anniversary-text {
+                font-size: 1.8rem;
+            }
+
+            .question-title {
+                font-size: 2.2rem;
+            }
+
+            .letter-title {
+                font-size: 2rem;
+            }
+
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+                height: 120px;
+                gap: 20px;
+            }
+
+            .btn-yes, .btn-no {
+                width: 200px;
+            }
+
+            .heart, .star {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-content, .question-content, .letter-content {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .question-title {
+                font-size: 1.8rem;
+            }
+
+            .letter-title {
+                font-size: 1.5rem;
+            }
+
+            .letter-body {
+                font-size: 1.1rem;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-decoration">
+        <div class="heart">♥</div>
+        <div class="heart">♥</div>
+        <div class="heart">♥</div>
+        <div class="heart">♥</div>
+        <div class="heart">♥</div>
+        <div class="star">✨</div>
+        <div class="star">✨</div>
+        <div class="star">✨</div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div class="screen active" id="welcomeScreen">
+        <div class="welcome-content">
+            <h1 class="welcome-title">♥ Chào Em Yêu ♥</h1>
+            <p class="welcome-subtitle">Người con gái đặc biệt nhất</p>
+            <div class="anniversary-text">🎉 Anniversary 5 Years 🎉</div>
+            <p style="font-size: 1.2rem; color: #ad1457; margin-bottom: 30px; font-style: italic;">
+                5 năm bên nhau, vô vàn kỷ niệm đẹp...
+            </p>
+            <button class="continue-btn" onclick="showQuestionScreen()">
+                Tiếp tục ♥
+            </button>
+        </div>
+    </div>
+
+    <!-- Question Screen -->
+    <div class="screen" id="questionScreen">
+        <div class="question-content">
+            <h2 class="question-title">Có iu Zii hông? 💕</h2>
+            <div class="buttons-container">
+                <button class="btn-yes" onclick="showLetter()">Có ♥</button>
+                <button class="btn-no" id="btnNo" onclick="moveButton()">Không</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Letter Screen -->
+    <div class="screen" id="letterScreen">
+        <div class="letter-content">
+            <div class="letter-header">
+                <h2 class="letter-title">💌 Thư Tình Gửi Em 💌</h2>
+            </div>
+            <div class="letter-body">
+                <p><strong>Em yêu của anh,</strong></p>
+                <br>
+                <p>5 năm... Một con số không quá lớn nhưng chứa đựng biết bao kỷ niệm đẹp mà chúng ta đã cùng nhau tạo nên. Từ những ngày đầu còn ngại ngùng, đến những lúc cùng nhau cười, cùng nhau khóc, cùng nhau vượt qua mọi khó khăn...</p>
+                <br>
+                <p>Anh vẫn nhớ như in những khoảnh khắc đầu tiên, ánh mắt em, nụ cười em, và cả những lần em cau có khi anh làm gì đó ngớ ngẩn. Tất cả đều là những mảnh ghép tạo nên bức tranh tình yêu đẹp nhất mà anh từng có.</p>
+                <br>
+                <p>Em có biết không, mỗi ngày thức dậy bên em đều như một món quà tuyệt vời. Em là ánh sáng soi đường cho anh, là động lực để anh cố gắng trở thành phiên bản tốt hơn mỗi ngày.</p>
+                <br>
+                <p>Cảm ơn em vì đã yêu anh, vì đã ở bên anh, vì đã tin tướng anh. Cảm ơn em vì đã biến 5 năm qua trở thành những năm tháng đẹp nhất trong cuộc đời anh.</p>
+                <br>
+                <p>Anh hứa sẽ luôn yêu thương em, chăm sóc em, và bảo vệ em. Hứa sẽ luôn là người đàn ông mà em có thể dựa dẫm và tự hào.</p>
+                <br>
+                <p>Chúc mừng kỷ niệm 5 năm yêu nhau của chúng ta, em yêu! ♥</p>
+                <br>
+                <p style="text-align: right;"><strong>Yêu em nhiều lắm,</strong><br><em>Zii của em</em> 💕</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let moveCount = 0;
+
+        function showQuestionScreen() {
+            document.getElementById('welcomeScreen').classList.remove('active');
+            document.getElementById('questionScreen').classList.add('active');
+        }
+
+        function showLetter() {
+            document.getElementById('questionScreen').classList.remove('active');
+            document.getElementById('letterScreen').classList.add('active');
+            
+            // Add some celebration effects
+            createHeartRain();
+        }
+
+        function moveButton() {
+            const btnNo = document.getElementById('btnNo');
+            const container = btnNo.parentElement;
+            
+            moveCount++;
+            
+            // Change button text to be more playful
+            const texts = [
+                "Không", "Thật không?", "Chắc không?", 
+                "Suy nghĩ lại đi", "Đừng vậy mà", "Iu một tí thôi",
+                "Tại sao không?", "Iu đi mà", "Một tí thôi", "Please..."
+            ];
+            
+            btnNo.textContent = texts[Math.min(moveCount - 1, texts.length - 1)];
+            
+            // Get random position
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+            
+            const maxX = containerRect.width - btnRect.width;
+            const maxY = containerRect.height - btnRect.height;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+            
+            // Make button smaller and harder to click after several attempts
+            if (moveCount > 5) {
+                btnNo.style.transform = `scale(${Math.max(0.5, 1 - (moveCount - 5) * 0.1)})`;
+            }
+            
+            // Eventually make the button give up
+            if (moveCount > 10) {
+                btnNo.textContent = "OK, em thắng rồi! 🥺";
+                btnNo.onclick = showLetter;
+                btnNo.style.background = "linear-gradient(45deg, #4caf50, #66bb6a)";
+            }
+        }
+
+        function createHeartRain() {
+            const colors = ['#ff69b4', '#ff1744', '#e91e63', '#ad1457'];
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '♥';
+                    heart.style.position = 'fixed';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = '-50px';
+                    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                    heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    heart.style.zIndex = '9999';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.animation = 'fall 3s linear forwards';
+                    
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        // Add falling animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add some interactive heart effects on click
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('continue-btn') || e.target.classList.contains('btn-yes')) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '💕';
+                heart.style.position = 'fixed';
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                heart.style.fontSize = '20px';
+                heart.style.zIndex = '9999';
+                heart.style.pointerEvents = 'none';
+                heart.style.animation = 'heartPop 1s ease-out forwards';
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 1000);
+            }
+        });
+
+        const heartPopStyle = document.createElement('style');
+        heartPopStyle.textContent = `
+            @keyframes heartPop {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.5);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: scale(2) translateY(-50px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(heartPopStyle);
+    </script>
+</body>
+</html>
